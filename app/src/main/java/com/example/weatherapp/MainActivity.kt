@@ -15,27 +15,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val client = OkHttpClient()
-        val req = Request.Builder().url("https://jsonplaceholder.typicode.com/todos/1").build()
+        val req = Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q=tehran&appid=0ae333a163d630d5372038e78ad370dc").build()
         client.newCall(req).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                binding.tvP.text = "connection error"
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val j = response.body!!.string()
                 val jo = JSONObject(j)
 
-                val mytodo = DataModel(
-                    jo.getInt("userId"),
-                    jo.getInt("id"),
-                    jo.getString("title"),
-                    jo.getString("completed")
-                )
 runOnUiThread {
-
-    binding.tvP.text = mytodo.task }
+ShowName(jo.getString("name"))
+}
             }
 
         })
+    }
+    fun ShowName(cityName:String){
+        binding.tvCityName.text = cityName
     }
 }
